@@ -1,8 +1,8 @@
 spring:
   profiles:
     active:
-      - service
-      - local
+    - service
+    - local
   datasource:
     url: "jdbc:h2:file:./db/codebreaker"
   jpa:
