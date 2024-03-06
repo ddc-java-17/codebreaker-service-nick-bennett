@@ -3,6 +3,7 @@ package edu.cnm.deepdive.codebreaker.service;
 import edu.cnm.deepdive.codebreaker.model.dao.UserRepository;
 import edu.cnm.deepdive.codebreaker.model.entity.User;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +20,8 @@ public class UserService implements AbstractUserService {
   }
 
   @Override
-  public User getOrCreate(String oauthKey, String displayName) { // TODO: 2024-02-29 Add parameters for additional user profile info from the bearer token.
+  public User getOrCreate(String oauthKey,
+      String displayName) { // TODO: 2024-02-29 Add parameters for additional user profile info from the bearer token.
     return userRepository
         .findUserByOauthKey(oauthKey)
         .orElseGet(() -> {
@@ -57,6 +59,39 @@ public class UserService implements AbstractUserService {
   public Optional<User> get(UUID key, User requester) {
     return userRepository
         .findUserByKey(key); // TODO: 2024-02-29 Apply access-control rules as appropriate.
+  }
+
+  @Override
+  public boolean follow(UUID followingKey, User requester, boolean following) {
+    return userRepository
+        .findById(requester.getId())
+        .flatMap((user) -> userRepository
+            .findUserByKey(followingKey)
+            .map((followed) -> {
+              if (following) {
+                user.getFollowedUsers().add(followed);
+              } else {
+                user.getFollowedUsers().remove(followed);
+              }
+              return userRepository.save(user).getFollowedUsers().contains(followed);
+            }))
+        .orElseThrow();
+  }
+
+  @Override
+  public Set<User> getFollows(User requester) {
+    return userRepository
+        .findById(requester.getId())
+        .map(User::getFollowedUsers)
+        .orElseThrow();
+  }
+
+  @Override
+  public Set<User> getFollowers(User requester) {
+    return userRepository
+        .findById(requester.getId())
+        .map(User::getFollowingUsers)
+        .orElseThrow();
   }
 
 }
