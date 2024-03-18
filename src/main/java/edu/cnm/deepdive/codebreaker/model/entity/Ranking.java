@@ -2,7 +2,9 @@ package edu.cnm.deepdive.codebreaker.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import edu.cnm.deepdive.codebreaker.model.RankingId;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -14,20 +16,13 @@ import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
 
 @Entity
-@IdClass(RankingId.class)
 @Immutable
 @Subselect("SELECT * FROM ranking")
 public class Ranking {
 
   @Id
-  @JsonIgnore
-  private long userId;
-
-  @Id
-  private int poolSize;
-
-  @Id
-  private int length;
+  @JsonUnwrapped
+  private RankingId id;
 
   private int gameCount;
 
@@ -35,20 +30,12 @@ public class Ranking {
 
   private double avgDuration;
 
-  @ManyToOne(fetch = FetchType.EAGER, optional = false)
-  @JoinColumn(name = "user_id", nullable = false, updatable = false)
-  private User user;
-
-  public long getUserId() {
-    return userId;
+  public RankingId getId() {
+    return id;
   }
 
-  public int getPoolSize() {
-    return poolSize;
-  }
-
-  public int getLength() {
-    return length;
+  public void setId(RankingId id) {
+    this.id = id;
   }
 
   public int getGameCount() {
@@ -61,11 +48,6 @@ public class Ranking {
 
   public double getAvgDuration() {
     return avgDuration;
-  }
-
-  @JsonProperty("userId")
-  public UUID getExternalKey() {
-    return user.getKey();
   }
 
 }

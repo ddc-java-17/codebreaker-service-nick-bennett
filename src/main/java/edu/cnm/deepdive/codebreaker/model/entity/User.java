@@ -22,6 +22,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -33,11 +34,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "user_profile")
 @JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder({"key", "created", "modified", "displayName"})
-public class User implements UserPublic {
+public class User implements UserPublic, Serializable {
 
   @Id
   @NonNull
