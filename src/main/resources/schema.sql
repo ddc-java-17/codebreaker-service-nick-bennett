@@ -8,7 +8,7 @@ SELECT
     AVG(agg.duration) AS avg_duration
 FROM
     game AS gm
-        JOIN (
+    JOIN (
         SELECT
             gm.game_id,
             COUNT(*) AS guess_count,
