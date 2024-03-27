@@ -22,6 +22,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -38,7 +39,7 @@ import org.springframework.lang.NonNull;
 @Table(name = "user_profile")
 @JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder({"key", "created", "modified", "displayName"})
-public class User {
+public class User implements Serializable {
 
   @Id
   @NonNull

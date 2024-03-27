@@ -8,12 +8,12 @@ import jakarta.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
-@SuppressWarnings({"JpaDataSourceORMInspection", "unused"})
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Embeddable
 public class RankingId implements Serializable {
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name= "user_id")
+  @JoinColumn(name = "user_id")
   private User user;
 
   private int poolSize;

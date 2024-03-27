@@ -26,6 +26,10 @@ public class Ranking {
     return id;
   }
 
+  public void setId(RankingId id) {
+    this.id = id;
+  }
+
   public int getGameCount() {
     return gameCount;
   }
